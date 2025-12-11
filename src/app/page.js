@@ -1,16 +1,23 @@
-import HeroSection from "@/components/HeroSection"; // Import kiya
+import HeroSection from "@/components/HeroSection";
+import Stats from "@/components/Stats";
+import Features from "@/components/Features";
+import Courses from "@/components/Courses";
+import Testimonials from "@/components/Testimonials";
+import CtaSection from "@/components/CtaSection"; // ✅ Sahi import aisa hona chahiye
+import Footer from "@/components/Footer";
+import FloatingChat from "@/components/FloatingChat";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
       <HeroSection />
-      
-      {/* Baaki sections future mein yahan aayenge */}
-      <section className="py-20 text-center">
-        <h2 className="text-3xl font-bold text-gray-800">Why Choose Us?</h2>
-        <p className="text-gray-500">Coming soon...</p>
-      </section>
+      <Stats />
+      <Features />
+      <Courses />
+      <Testimonials />
+      <CtaSection />
+      <Footer />
+      <FloatingChat />
     </div>
   );
 }
