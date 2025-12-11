@@ -3,8 +3,7 @@ import Stats from "@/components/Stats";
 import Features from "@/components/Features";
 import Courses from "@/components/Courses";
 import Testimonials from "@/components/Testimonials";
-import CtaSection from "@/components/CtaSection"; // ✅ Sahi import aisa hona chahiye
-import Footer from "@/components/Footer";
+import CtaSection from "@/components/CtaSection";
 import FloatingChat from "@/components/FloatingChat";
 
 export default function Home() {
@@ -16,7 +15,6 @@ export default function Home() {
       <Courses />
       <Testimonials />
       <CtaSection />
-      <Footer />
       <FloatingChat />
     </div>
   );

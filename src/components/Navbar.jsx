@@ -1,7 +1,8 @@
+// src/components/Navbar.jsx
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation"; // 1. Import hook
 import { useSession, signOut } from "next-auth/react";
 import { 
   Menu, X, ChevronDown, GraduationCap, 
@@ -11,12 +12,16 @@ import {
 
 const Navbar = () => {
   const { data: session, status } = useSession();
+  const pathname = usePathname(); // 2. Get current path
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileCourseOpen, setIsMobileCourseOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
 
-  // Scroll Listener
+  // 3. Admin Panel par Navbar mat dikhao
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -25,7 +30,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lock Body Scroll when Menu is Open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -56,9 +60,6 @@ const Navbar = () => {
 
   return (
     <>
-      {/* NAVBAR CONTAINER 
-        z-50 rakha hai taaki ye hamesha sabse upar rahe.
-      */}
       <nav 
         className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-transparent ${
           scrolled || isOpen 
@@ -69,7 +70,6 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             
-            {/* Logo */}
             <Link href="/" className="flex items-center gap-2 z-50">
               <div className="relative flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl text-white shadow-lg shadow-blue-500/30">
                 <GraduationCap size={22} />
@@ -79,7 +79,7 @@ const Navbar = () => {
               </span>
             </Link>
 
-            {/* Desktop Navigation (Hidden on Mobile) */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-6 bg-white/60 px-6 py-2 rounded-full backdrop-blur-md border border-gray-100/50 shadow-sm">
               <NavLink href="/">Home</NavLink>
               <div className="relative group">
@@ -110,14 +110,14 @@ const Navbar = () => {
               <NavLink href="/contact">Contact</NavLink>
             </div>
 
-            {/* Desktop Auth Section */}
+            {/* Auth Section */}
             <div className="hidden md:flex items-center gap-4">
               {status === "loading" ? (
                 <div className="w-24 h-10 bg-gray-100 animate-pulse rounded-full"></div>
               ) : session ? (
                 <div className="relative group">
                   <button className="flex items-center gap-3 pl-1 pr-3 py-1 bg-white border border-gray-200 rounded-full hover:shadow-md hover:border-blue-200 transition-all">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md">
                       {session.user?.name?.charAt(0).toUpperCase()}
                     </div>
                     <div className="text-left">
@@ -145,7 +145,7 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Mobile Menu Toggle Button - Isko z-50 rakha hai taaki ye hamesha click ho */}
+            {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center z-50">
               <button 
                 onClick={() => setIsOpen(!isOpen)} 
@@ -159,10 +159,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* MOBILE MENU OVERLAY 
-        Fixed inset-0 z-40 (Navbar ke neeche, content ke upar).
-        padding-top 80px diya hai taaki header ke neeche se content shuru ho.
-      */}
+      {/* Mobile Menu Overlay */}
       <div 
         className={`md:hidden fixed inset-0 bg-white z-40 transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
@@ -180,7 +177,6 @@ const Navbar = () => {
               Home <ChevronRight size={18} className="text-gray-400" />
             </Link>
 
-            {/* Mobile Accordion */}
             <div>
               <button 
                 onClick={() => setIsMobileCourseOpen(!isMobileCourseOpen)}

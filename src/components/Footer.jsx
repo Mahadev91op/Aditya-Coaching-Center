@@ -1,17 +1,23 @@
+// src/components/Footer.jsx
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { 
   GraduationCap, Facebook, Twitter, Instagram, Youtube, Linkedin, 
   Mail, Phone, MapPin, ArrowRight, Send, ChevronDown 
 } from "lucide-react";
 
 const Footer = () => {
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
-  
-  // Mobile Accordion State
   const [openSection, setOpenSection] = useState("");
+
+  // 1. Footer ko Admin aur Dashboard dono se hatao
+  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? "" : section);
@@ -28,7 +34,6 @@ const Footer = () => {
     }
   };
 
-  // Helper for Links List
   const FooterLinks = ({ title, links, id }) => (
     <div className="border-b md:border-none border-slate-800 pb-4 md:pb-0">
       <button 
@@ -43,15 +48,30 @@ const Footer = () => {
       </button>
       <ul className={`space-y-3 mt-4 text-sm text-slate-400 overflow-hidden transition-all duration-300 md:block ${openSection === id ? "max-h-96 opacity-100" : "max-h-0 opacity-0 md:max-h-full md:opacity-100"}`}>
         {links.map((item) => (
-          <li key={item}>
-            <Link href="#" className="hover:text-blue-400 hover:pl-2 transition-all duration-300 flex items-center gap-2 group">
-              <span className="w-0 group-hover:w-2 overflow-hidden transition-all text-blue-500">•</span> {item}
+          <li key={item.name}>
+            <Link href={item.href} className="hover:text-blue-400 hover:pl-2 transition-all duration-300 flex items-center gap-2 group">
+              <span className="w-0 group-hover:w-2 overflow-hidden transition-all text-blue-500">•</span> {item.name}
             </Link>
           </li>
         ))}
       </ul>
     </div>
   );
+
+  const exploreLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Courses', href: '/courses' },
+    { name: 'Testimonials', href: '/about' },
+    { name: 'Contact', href: '/contact' }
+  ];
+
+  const courseLinks = [
+    { name: 'Class 11 Science', href: '/courses/class-11-science' },
+    { name: 'Class 12 Boards', href: '/courses/class-12-boards' },
+    { name: 'JEE Mains', href: '/courses/jee-mains' },
+    { name: 'NEET Medical', href: '/courses/neet-medical' }
+  ];
 
   return (
     <footer className="bg-slate-950 text-white relative overflow-hidden pt-10 md:pt-20">
@@ -61,7 +81,7 @@ const Footer = () => {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* --- COMPACT NEWSLETTER (Mobile: Stacked, Desktop: Row) --- */}
+        {/* Newsletter */}
         <div className="mb-10 md:mb-20 flex flex-col md:flex-row items-center justify-between gap-6 p-6 md:p-8 bg-slate-900/50 border border-slate-800 rounded-2xl md:rounded-3xl backdrop-blur-sm">
           <div className="text-center md:text-left">
             <h3 className="text-xl md:text-2xl font-bold text-white mb-1">Stay Updated</h3>
@@ -94,10 +114,9 @@ const Footer = () => {
           </form>
         </div>
 
-        {/* --- MAIN CONTENT (Mobile: Stacked with Accordions) --- */}
+        {/* Links Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-10 md:mb-20">
           
-          {/* Brand & Socials (Always Visible) */}
           <div className="space-y-4 md:space-y-6 text-center md:text-left">
             <Link href="/" className="inline-flex items-center gap-2">
               <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-lg text-white">
@@ -111,7 +130,6 @@ const Footer = () => {
               Empowering students to achieve academic dreams. Foundation for JEE, NEET & Boards.
             </p>
             
-            {/* Social Icons */}
             <div className="flex gap-3 justify-center md:justify-start">
               {[
                 { Icon: Facebook, color: "hover:bg-blue-600" },
@@ -119,28 +137,25 @@ const Footer = () => {
                 { Icon: Twitter, color: "hover:bg-sky-500" },
                 { Icon: Youtube, color: "hover:bg-red-600" }
               ].map(({ Icon, color }, idx) => (
-                <a key={idx} href="#" className={`w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 ${color} hover:text-white transition-all`}>
+                <a key={idx} href="#" onClick={(e) => e.preventDefault()} className={`w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 ${color} hover:text-white transition-all`}>
                   <Icon size={16} />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Quick Links (Accordion on Mobile) */}
           <FooterLinks 
             id="explore" 
             title="Explore" 
-            links={['Home', 'About Us', 'Courses', 'Testimonials', 'Contact']} 
+            links={exploreLinks} 
           />
 
-          {/* Courses (Accordion on Mobile) */}
           <FooterLinks 
             id="courses" 
             title="Popular Courses" 
-            links={['Class 11 Science', 'Class 12 Boards', 'JEE Mains', 'NEET Medical']} 
+            links={courseLinks} 
           />
 
-          {/* Contact Info (Always Visible but compact) */}
           <div className="pt-4 md:pt-0">
             <h4 className="text-white font-bold text-lg mb-4 md:mb-6 text-center md:text-left">Get in Touch</h4>
             <ul className="space-y-3 text-sm text-slate-400">
@@ -161,14 +176,12 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* --- BIG BACKGROUND TEXT --- */}
       <div className="w-full overflow-hidden leading-none opacity-[0.03] pointer-events-none select-none absolute bottom-0 left-0">
          <h1 className="text-[18vw] md:text-[15vw] font-black text-center whitespace-nowrap text-white">
             ADITYA COACHING
          </h1>
       </div>
 
-      {/* --- COPYRIGHT STRIP --- */}
       <div className="border-t border-slate-900 bg-slate-950 relative z-10">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 font-medium text-center">
           <p>© 2025 Aditya Coaching Center.</p>
@@ -180,7 +193,7 @@ const Footer = () => {
 
           <div className="flex items-center gap-1 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
              <span>By</span>
-             <Link href="https://devsamp.vercel.app/" className="text-blue-500 font-bold hover:text-blue-400">
+             <Link href="https://devsamp.vercel.app/" target="_blank" className="text-blue-500 font-bold hover:text-blue-400">
                DevSamp
              </Link>
           </div>
