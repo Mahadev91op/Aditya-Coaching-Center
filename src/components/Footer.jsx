@@ -171,7 +171,7 @@ const Footer = () => {
       {/* --- COPYRIGHT STRIP --- */}
       <div className="border-t border-slate-900 bg-slate-950 relative z-10">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 font-medium text-center">
-          <p>© 2024 Aditya Coaching Center.</p>
+          <p>© 2025 Aditya Coaching Center.</p>
           
           <div className="flex gap-4">
             <Link href="#" className="hover:text-white">Privacy</Link>
@@ -180,7 +180,7 @@ const Footer = () => {
 
           <div className="flex items-center gap-1 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
              <span>By</span>
-             <Link href="https://devsamp.com" className="text-blue-500 font-bold hover:text-blue-400">
+             <Link href="https://devsamp.vercel.app/" className="text-blue-500 font-bold hover:text-blue-400">
                DevSamp
              </Link>
           </div>
